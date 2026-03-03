@@ -1,0 +1,113 @@
+name: Update Photo Exhibition Calendar
+
+on:
+  # 毎週日曜日の午前9時（日本時間）に実行
+  schedule:
+    - cron: '0 0 * * 0'  # UTC 0:00 = JST 9:00 (毎週日曜日)
+
+  # 手動実行も可能
+  workflow_dispatch:
+
+  # プッシュ時にも実行（テスト用）
+  push:
+    branches:
+      - master
+    paths:
+      - 'scrape_exhibitions.py'
+      - 'generate_calendar.py'
+      - '.github/workflows/update-calendar.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Scrape exhibition data
+        run: |
+          python scrape_exhibitions.py
+        continue-on-error: true
+
+      - name: Generate calendar HTML
+        run: |
+          python generate_calendar.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet tokyo_photo_calendar_2026.html; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "📌 変更なし: カレンダーに更新はありません"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ 変更あり: カレンダーを更新します"
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tokyo_photo_calendar_2026.html exhibitions_data.json
+          git commit -m "🔄 Update photo exhibition calendar - $(date +'%Y-%m-%d %H:%M')"
+          git push
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: calendar-data
+          path: |
+            tokyo_photo_calendar_2026.html
+            exhibitions_data.json
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## 📅 カレンダー更新完了" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **実行日時**: $(date +'%Y年%m月%d日 %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+          echo "- **変更**: ${{ steps.check_changes.outputs.changed == 'true' && '✅ あり' || '📌 なし' }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f exhibitions_data.json ]; then
+            COUNT=$(python -c "import json; data=json.load(open('exhibitions_data.json')); print(data['count'])")
+            echo "- **展示会数**: ${COUNT}件" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
