@@ -157,9 +157,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .day-cell {{
       background: white;
       min-height: 120px;
+      max-height: 180px;
       padding: 8px;
       position: relative;
       cursor: default;
+      overflow-y: auto;
+      overflow-x: hidden;
     }}
 
     .day-cell.other-month {{
@@ -202,6 +205,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       align-items: center;
       justify-content: center;
       float: right;
+    }}
+
+    /* スクロールバーのスタイリング */
+    .day-cell::-webkit-scrollbar {{
+      width: 6px;
+    }}
+
+    .day-cell::-webkit-scrollbar-track {{
+      background: #f1f1f1;
+      border-radius: 3px;
+    }}
+
+    .day-cell::-webkit-scrollbar-thumb {{
+      background: #c1c1c1;
+      border-radius: 3px;
+    }}
+
+    .day-cell::-webkit-scrollbar-thumb:hover {{
+      background: #a0a0a0;
     }}
 
     .event {{
@@ -322,6 +344,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       .day-cell {{
         min-height: 80px;
+        max-height: 120px;
         padding: 4px;
       }}
 
