@@ -4,7 +4,7 @@
 
 ## 🌐 デモ
 
-**Live:** [https://AramasaAsh.github.io/TokyoPhotoExhibition/](https://AramasaAsh.github.io/TokyoPhotoExhibition/)
+**Live:** [https://KurouzuSetsuna.github.io/TokyoPhotoExhibition/](https://KurouzuSetsuna.github.io/TokyoPhotoExhibition/)
 
 ## ✨ 特徴
 
@@ -17,7 +17,7 @@
 
 ## 🚀 使い方
 
-1. [カレンダーページ](https://AramasaAsh.github.io/TokyoPhotoExhibition/)にアクセス
+1. [カレンダーページ](https://KurouzuSetsuna.github.io/TokyoPhotoExhibition/)にアクセス
 2. 月を選択して写真展を確認
 3. 気になる展示会をクリックして詳細を確認
 4. 「Googleカレンダーにエクスポート」ボタンで予定に追加
@@ -69,7 +69,7 @@
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/AramasaAsh/TokyoPhotoExhibition.git
+git clone https://github.com/KurouzuSetsuna/TokyoPhotoExhibition.git
 cd TokyoPhotoExhibition
 
 # 依存パッケージをインストール
@@ -103,5 +103,5 @@ open tokyo_photo_calendar_2026.html
 
 ---
 
-**作成者**: [AramasaAsh](https://github.com/AramasaAsh)
+**作成者**: [KurouzuSetsuna](https://github.com/KurouzuSetsuna)
 **最終更新**: 2026年3月
