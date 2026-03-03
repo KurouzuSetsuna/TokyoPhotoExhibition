@@ -32,49 +32,40 @@ def scrape_tokyo_exhibitions(url: str = "https://getnavi.jp/capa/exhibition/toky
 
         response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
-        response.encoding = response.apparent_encoding
+        response.encoding = 'utf-8'
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
         exhibitions = []
 
-        # 記事要素を検索（サイト構造に応じて調整が必要）
-        # 一般的な写真展リストの構造を想定
-        articles = soup.find_all(['article', 'div'], class_=re.compile(r'exhibition|event|post|item'))
+        # 日付パターンを含むdiv要素を探す（実際のサイト構造に基づく）
+        date_pattern = re.compile(r'^\s*\d+/\d+')
+        date_divs = soup.find_all('div', string=date_pattern)
 
-        if not articles:
-            # 別のセレクタを試す
-            articles = soup.find_all(['div', 'li'], class_=re.compile(r'entry|list-item'))
+        print(f"見つかった展示会数: {len(date_divs)}")
 
-        print(f"見つかった記事数: {len(articles)}")
-
-        for article in articles:
+        for date_div in date_divs:
             try:
-                # タイトルを取得
-                title_elem = article.find(['h2', 'h3', 'h4', 'a'], class_=re.compile(r'title|heading'))
-                if not title_elem:
-                    title_elem = article.find(['h2', 'h3', 'h4'])
-                if not title_elem:
-                    title_elem = article.find('a')
-
-                if not title_elem:
+                # li要素（展示会情報の親）を取得
+                li = date_div.parent
+                if not li or li.name != 'li':
                     continue
 
-                title = title_elem.get_text(strip=True)
+                # 日付とタイトルを取得
+                date_text = date_div.get_text(strip=True)
+                title_p = li.find('p')
+                if not title_p:
+                    continue
 
-                # 日付情報を取得
-                date_elem = article.find(['time', 'span', 'div'], class_=re.compile(r'date|time|period'))
-                date_text = date_elem.get_text(strip=True) if date_elem else ""
+                title = title_p.get_text(strip=True)
 
-                # 場所情報を取得
-                location_elem = article.find(['span', 'div', 'p'], class_=re.compile(r'location|venue|place'))
-                location = location_elem.get_text(strip=True) if location_elem else "東京都内"
-
-                # リンクを取得
-                link_elem = article.find('a', href=True)
-                link = link_elem['href'] if link_elem else ""
-                if link and not link.startswith('http'):
-                    link = f"https://getnavi.jp{link}"
+                # ギャラリー名を取得（ulの前のh4）
+                ul = li.parent
+                gallery = "東京都内"
+                if ul and ul.name == 'ul':
+                    h4 = ul.find_previous('h4')
+                    if h4:
+                        gallery = h4.get_text(strip=True)
 
                 # 日付をパース
                 start_date, end_date = parse_date_range(date_text)
@@ -84,9 +75,9 @@ def scrape_tokyo_exhibitions(url: str = "https://getnavi.jp/capa/exhibition/toky
                         'title': title,
                         'start_date': start_date,
                         'end_date': end_date,
-                        'location': location,
+                        'location': gallery,
                         'date_text': date_text,
-                        'link': link,
+                        'link': url,
                         'tag': 'exhibition'
                     })
 
@@ -106,13 +97,34 @@ def parse_date_range(date_text: str) -> tuple:
     """
     日付テキストから開始日と終了日を抽出
 
-    例: "2026年4月1日～4月30日" -> ("2026-04-01", "2026-04-30")
+    例:
+    - "2/3〜14" -> ("2026-02-03", "2026-02-14")
+    - "3/31〜4/11" -> ("2026-03-31", "2026-04-11")
+    - "2026年4月1日～4月30日" -> ("2026-04-01", "2026-04-30")
     """
     if not date_text:
         return None, None
 
     try:
-        # 年月日のパターン
+        # 現在の年を取得（2026年を想定）
+        current_year = 2026
+
+        # パターン1: "2/3〜14" や "3/31〜4/11" のような形式
+        # 月/日〜日 または 月/日〜月/日
+        simple_pattern = r'(\d{1,2})/(\d{1,2})\s*[〜~～-]\s*(?:(\d{1,2})/)?(\d{1,2})'
+        simple_match = re.search(simple_pattern, date_text)
+
+        if simple_match:
+            start_month = int(simple_match.group(1))
+            start_day = int(simple_match.group(2))
+            end_month = int(simple_match.group(3)) if simple_match.group(3) else start_month
+            end_day = int(simple_match.group(4))
+
+            start = f"{current_year}-{str(start_month).zfill(2)}-{str(start_day).zfill(2)}"
+            end = f"{current_year}-{str(end_month).zfill(2)}-{str(end_day).zfill(2)}"
+            return start, end
+
+        # パターン2: 年月日のフル形式
         pattern_full = r'(\d{4})年(\d{1,2})月(\d{1,2})日'
         matches = re.findall(pattern_full, date_text)
 
@@ -126,7 +138,7 @@ def parse_date_range(date_text: str) -> tuple:
             start = f"{matches[0][0]}-{matches[0][1].zfill(2)}-{matches[0][2].zfill(2)}"
             return start, start
 
-        # 月日のみのパターン（年が前にある場合）
+        # パターン3: 月日のみのパターン（年が前にある場合）
         year_match = re.search(r'(\d{4})年', date_text)
         if year_match:
             year = year_match.group(1)
@@ -166,9 +178,9 @@ def main():
 
     if exhibitions:
         save_exhibitions(exhibitions)
-        print(f"\n✅ 成功: {len(exhibitions)}件の展示会情報を取得しました")
+        print(f"\n成功: {len(exhibitions)}件の展示会情報を取得しました")
     else:
-        print("\n⚠️ 警告: 展示会情報を取得できませんでした")
+        print("\n警告: 展示会情報を取得できませんでした")
         # 空のデータを保存（エラーでビルドが止まらないように）
         save_exhibitions([])
 

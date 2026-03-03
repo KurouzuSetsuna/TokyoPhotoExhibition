@@ -632,7 +632,7 @@ def main():
     """メイン処理"""
     data = load_exhibitions()
     generate_html(data)
-    print(f"✅ 完了: {data['count']}件の展示会を含むカレンダーを生成しました")
+    print(f"完了: {data['count']}件の展示会を含むカレンダーを生成しました")
 
 
 if __name__ == "__main__":
