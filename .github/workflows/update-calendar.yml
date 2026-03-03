@@ -1,9 +1,11 @@
 name: Update Photo Exhibition Calendar
 
 on:
-  # 毎週日曜日の午前9時（日本時間）に実行
+  # 毎日3回実行（日本時間: 9:00、12:00、17:00）
   schedule:
-    - cron: '0 0 * * 0'  # UTC 0:00 = JST 9:00 (毎週日曜日)
+    - cron: '0 0 * * *'  # UTC 0:00 = JST 9:00 (毎日)
+    - cron: '0 3 * * *'  # UTC 3:00 = JST 12:00 (毎日)
+    - cron: '0 8 * * *'  # UTC 8:00 = JST 17:00 (毎日)
 
   # 手動実行も可能
   workflow_dispatch:
