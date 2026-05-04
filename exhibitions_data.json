@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-04T05:53:40.814012",
-  "count": 204,
+  "last_updated": "2026-05-04T10:20:16.919065",
+  "count": 205,
   "exhibitions": [
     {
       "title": "ミラノ・コルティナ2026 報道写真展",
@@ -1682,6 +1682,15 @@
       "end_date": "2026-04-19",
       "location": "Jam Photo Gallery",
       "date_text": "4/14～19",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "内川昌平「インプロ improvisation」",
+      "start_date": "2026-05-12",
+      "end_date": "2026-05-17",
+      "location": "Jam Photo Gallery",
+      "date_text": "5/12～17",
       "link": "https://getnavi.jp/capa/exhibition/tokyo/",
       "tag": "exhibition"
     },
