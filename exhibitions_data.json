@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-02T02:46:41.887982",
-  "count": 217,
+  "last_updated": "2026-06-02T07:14:50.235590",
+  "count": 219,
   "exhibitions": [
     {
       "title": "紫竹理枝子「SPRITE あいだを遊ぶ妖精たち」",
@@ -1673,6 +1673,24 @@
       "end_date": "2026-08-16",
       "location": "江東区古石場文化センター 1階ロビー",
       "date_text": "7/18～8/16",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "北沢美樹「Echoes of Others」",
+      "start_date": "2026-06-10",
+      "end_date": "2026-06-27",
+      "location": "S3 gallery TOKYO",
+      "date_text": "6/10〜27",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "宮崎雅子「A Tree 舞」",
+      "start_date": "2026-07-01",
+      "end_date": "2026-07-18",
+      "location": "S3 gallery TOKYO",
+      "date_text": "7/1～18",
       "link": "https://getnavi.jp/capa/exhibition/tokyo/",
       "tag": "exhibition"
     },
