@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-09-14T08:11:58.927643",
-  "count": 213,
+  "last_updated": "2026-09-14T14:56:20.773700",
+  "count": 214,
   "exhibitions": [
     {
       "title": "館野二朗「AWAI 奄美2016-2025」",
@@ -1907,6 +1907,15 @@
       "end_date": "2026-09-14",
       "location": "町田市フォトサロン",
       "date_text": "9/9～14",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "持田あきら写真展「鉄路は記憶を乗せて」、持田あきら・門倉一写真展「黄金のベンガル展」",
+      "start_date": "2026-09-16",
+      "end_date": "2026-09-23",
+      "location": "町田市フォトサロン",
+      "date_text": "9/16～23",
       "link": "https://getnavi.jp/capa/exhibition/tokyo/",
       "tag": "exhibition"
     },
