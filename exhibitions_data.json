@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-10-10T09:10:03.292102",
-  "count": 226,
+  "last_updated": "2026-10-10T14:23:47.803738",
+  "count": 227,
   "exhibitions": [
     {
       "title": "山岸伸・近井沙妃「馬力」",
@@ -98,6 +98,15 @@
       "end_date": "2026-11-19",
       "location": "ソニーイメージングギャラリー",
       "date_text": "11/6～19",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "松田 優「踊り子」",
+      "start_date": "2026-11-20",
+      "end_date": "2026-12-03",
+      "location": "ソニーイメージングギャラリー",
+      "date_text": "11/20～12/3",
       "link": "https://getnavi.jp/capa/exhibition/tokyo/",
       "tag": "exhibition"
     },
