@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-11-04T04:03:24.428842",
-  "count": 228,
+  "last_updated": "2026-11-04T10:04:20.584738",
+  "count": 229,
   "exhibitions": [
     {
       "title": "山岸伸・近井沙妃「馬力」",
@@ -1232,6 +1232,15 @@
       "end_date": "2026-11-01",
       "location": "ふげん社",
       "date_text": "10/9～11/1",
+      "link": "https://getnavi.jp/capa/exhibition/tokyo/",
+      "tag": "exhibition"
+    },
+    {
+      "title": "公文健太郎「土は静かである」",
+      "start_date": "2026-11-06",
+      "end_date": "2026-11-29",
+      "location": "ふげん社",
+      "date_text": "11/6〜29",
       "link": "https://getnavi.jp/capa/exhibition/tokyo/",
       "tag": "exhibition"
     },
